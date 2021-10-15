@@ -35,6 +35,12 @@ int main (int argc, char* argv[]) {
   int intensity =std::stoi( argv[5]);
   int nbthreads = std::stoi(argv[6]);
 
+  /*if (n % nbthreads != 0)
+    {
+      std::cerr<<"N must be divisable by number of threads!\n";
+      return -1;
+      }*/
+
   // printf("%i %i %i %i %i %i\n", functionID, a, b, n, intensity, nbthreads);
 
   float ban = 1.0 * (b-a) / n;
@@ -63,6 +69,12 @@ int main (int argc, char* argv[]) {
 		   int start = (pass * chunk);
 		   //printf("START:  %i\n", start);
 		   int end = ((pass + 1) * chunk) - 1;
+
+		   if (pass == nbthreads - 1)
+		     {
+		       end = n - 1;
+		     }
+		   
 		   //printf("END:  %i\n", end);
 		   
 		   //printf("pass: %i\n", pass);
@@ -70,108 +82,142 @@ int main (int argc, char* argv[]) {
 		   for (int i = start; i <= end; i++)
 		     {
 		       float x = a + ((i + 0.5) * ban);
-		       //printf("%f %f\n", x, tls);
+		       //printf("X: %f \n", x);
 		       tls += f1(x, intensity);
-		       printf("TLS: %f\n", tls);
+		       //printf("TLS: %f\n", tls);
 
 		     }
 		   //tls *= ban;
 		   pass++;
-		   printf("TLS: %f\n", tls);
-		   sum += tls;
-		   printf("SUM: %f\n", sum);
-
-
+		   //printf("TLS: %f\n", tls);
+		   //sum += tls;
+		   //printf("SUM: %f\n", sum);
 		  },
 		     
 		 [&](float tls) -> void{
 		   //sum += tls;
 		   //printf("SUM: %f\n", sum);
-		   sum *= ban;
+		   sum = tls * ban;
 		 }
 		 );
     break;
     case 2 :
     //Use f2  
-    sl.parfor<float>(0, nbthreads, 1,
-		 [&](float& tls) -> void{
-		   tls = 0;
-		 },
-		 [&](int i, float& tls) -> void{
+        sl.parfor<float>(0, nbthreads, 1,
+		   [&](float& tls) -> void{
+		     tls = 0;
+		   },
+		   [&](int pass, float& tls) -> void{
 		   //tls += b[i];
 
 		   int chunk = n/nbthreads;
-		   int pass = 0; //How do I determine this?
+		   //int pass = 0; //How do I determine this?
 		   int start = (pass * chunk);
+		   //printf("START:  %i\n", start);
 		   int end = ((pass + 1) * chunk) - 1;
+		   //printf("END:  %i\n", end);
+		   
+		   //printf("pass: %i\n", pass);
 		   
 		   for (int i = start; i <= end; i++)
 		     {
 		       float x = a + ((i + 0.5) * ban);
-		       //printf("%f\n", x);
+		       //printf("X: %f \n", x);
 		       tls += f2(x, intensity);
+		       //printf("TLS: %f\n", tls);
+
 		     }
-		   tls *= ban;
+		   //tls *= ban;
+		   pass++;
+		   //printf("TLS: %f\n", tls);
+		   //sum += tls;
+		   //printf("SUM: %f\n", sum);
 		  },
 		     
 		 [&](float tls) -> void{
-		   sum += tls;
+		   //sum += tls;
+		   //printf("SUM: %f\n", sum);
+		   sum = tls * ban;
 		 }
 		 );
     break;
   case 3 :
     //use f3
-    sl.parfor<float>(0, nbthreads, 1,
-		 [&](float& tls) -> void{
-		   tls = 0;
-		 },
-		 [&](int i, float& tls) -> void{
+        sl.parfor<float>(0, nbthreads, 1,
+		   [&](float& tls) -> void{
+		     tls = 0;
+		   },
+		   [&](int pass, float& tls) -> void{
 		   //tls += b[i];
 
 		   int chunk = n/nbthreads;
-		   int pass = 0; //How do I determine this?
+		   //int pass = 0; //How do I determine this?
 		   int start = (pass * chunk);
+		   //printf("START:  %i\n", start);
 		   int end = ((pass + 1) * chunk) - 1;
+		   //printf("END:  %i\n", end);
+		   
+		   //printf("pass: %i\n", pass);
 		   
 		   for (int i = start; i <= end; i++)
 		     {
 		       float x = a + ((i + 0.5) * ban);
-		       //printf("%f\n", x);
+		       //printf("X: %f \n", x);
 		       tls += f3(x, intensity);
+		       //printf("TLS: %f\n", tls);
+
 		     }
-		   tls *= ban;
+		   //tls *= ban;
+		   pass++;
+		   //printf("TLS: %f\n", tls);
+		   //sum += tls;
+		   //printf("SUM: %f\n", sum);
 		  },
 		     
 		 [&](float tls) -> void{
-		   sum += tls;
+		   //sum += tls;
+		   //printf("SUM: %f\n", sum);
+		   sum = tls * ban;
 		 }
 		 );
     break;
   case 4 :
     //use f4
-    sl.parfor<float>(0, nbthreads, 1,
-		 [&](float& tls) -> void{
-		   tls = 0;
-		 },
-		 [&](int i, float& tls) -> void{
+        sl.parfor<float>(0, nbthreads, 1,
+		   [&](float& tls) -> void{
+		     tls = 0;
+		   },
+		   [&](int pass, float& tls) -> void{
 		   //tls += b[i];
 
 		   int chunk = n/nbthreads;
-		   int pass = 0; //How do I determine this?
+		   //int pass = 0; //How do I determine this?
 		   int start = (pass * chunk);
+		   //printf("START:  %i\n", start);
 		   int end = ((pass + 1) * chunk) - 1;
+		   //printf("END:  %i\n", end);
+		   
+		   //printf("pass: %i\n", pass);
 		   
 		   for (int i = start; i <= end; i++)
 		     {
 		       float x = a + ((i + 0.5) * ban);
-		       //printf("%f\n", x);
+		       //printf("X: %f \n", x);
 		       tls += f4(x, intensity);
+		       //printf("TLS: %f\n", tls);
+
 		     }
-		   tls *= ban;
+		   //tls *= ban;
+		   pass++;
+		   //printf("TLS: %f\n", tls);
+		   //sum += tls;
+		   //printf("SUM: %f\n", sum);
 		  },
 		     
 		 [&](float tls) -> void{
-		   sum += tls;
+		   //sum += tls;
+		   //printf("SUM: %f\n", sum);
+		   sum = tls * ban;
 		 }
 		 );
     break;
