@@ -39,7 +39,7 @@ int main (int argc, char* argv[]) {
 
   float ban = 1.0 * (b-a) / n;
   //printf("%i    %f\n", bMinusA, ban);
-  float result = 0;
+  //float result = 0;
 
   SeqLoop sl;
   int sum = 0;
@@ -66,11 +66,12 @@ int main (int argc, char* argv[]) {
 		   for (int i = start; i <= end; i++)
 		     {
 		       float x = a + ((i + 0.5) * ban);
-		       printf("%f\n", x);
-		       result += f1(x, intensity);
+		       //printf("%f\n", x);
+		       tls += f1(x, intensity);
 		     }
-		   result *= ban;
+		   tls *= ban;
 		   //tls += b[i];
+		   
 
 		   
 		  },
@@ -79,17 +80,17 @@ int main (int argc, char* argv[]) {
 		 }
 		 );
 
-    std::cout<<sum<<"\n";
+    //std::cout<<sum<<"\n";
     
-    for (int i = 0; i <= n-1; i++)
+    /* for (int i = 0; i <= n-1; i++)
       {
 	float x = a + ((i + 0.5) * ban);
 	printf("%f\n", x);
 	result += f1(x, intensity);
-      }
-    result *= ban;
+	} */
+    sum *= ban;
     break;
-  case 2 :
+    /* case 2 :
     //Use f2
     for (int i = 0; i <= n-1; i++)
       {
@@ -117,6 +118,7 @@ int main (int argc, char* argv[]) {
       }
     result *= ban;
     break;
+    */
   default :
     std::cerr<<"invalid functionID";
       return -1;
@@ -128,7 +130,7 @@ int main (int argc, char* argv[]) {
   
   //printf("Result = %f     Elapsed = %f seconds\n", result, elapsed);
 
-  std::cout << std::to_string(result) << std::endl;
+  std::cout << std::to_string(sum) << std::endl;
   std::cerr << std::to_string(elapsed) << std::endl;
   
   return 0;
