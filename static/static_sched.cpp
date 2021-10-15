@@ -42,7 +42,7 @@ int main (int argc, char* argv[]) {
   //float result = 0;
 
   SeqLoop sl;
-  int sum = 0;
+  float sum = 0;
 
   
   auto start = std::chrono::steady_clock::now();
@@ -51,11 +51,46 @@ int main (int argc, char* argv[]) {
   {
   case 1 :
     //Use f1
-    sl.parfor<int>(0, nbthreads-1, 1,
-		 [&](int& tls) -> void{
+    sl.parfor<float>(0, nbthreads, 1,
+		   [&](float& tls) -> void{
+		     tls = 0;
+		   },
+		   [&](int i, float& tls) -> void{
+		   //tls += b[i];
+
+		   int chunk = n/nbthreads;
+		   int pass = 0; //How do I determine this?
+		   int start = (pass * chunk);
+		   int end = ((pass + 1) * chunk) - 1;
+		   
+		   for (int i = start; i <= end; i++)
+		     {
+		       float x = a + ((i + 0.5) * ban);
+		       //printf("%f %f\n", x, tls);
+		       tls += f1(x, intensity);
+		       //printf("%f\n", tls);
+
+		     }
+		   tls *= ban;
+		   pass++;
+		   //printf("%f\n", tls);
+
+		  },
+		     
+		 [&](float tls) -> void{
+		   sum += tls;
+		   //printf("%f\n", sum);
+
+		 }
+		 );
+    break;
+    case 2 :
+    //Use f2  
+    sl.parfor<float>(0, nbthreads-1, 1,
+		 [&](float& tls) -> void{
 		   tls = 0;
 		 },
-		 [&](int i, int& tls) -> void{
+		 [&](int i, float& tls) -> void{
 		   //tls += b[i];
 
 		   int chunk = n/nbthreads;
@@ -67,58 +102,72 @@ int main (int argc, char* argv[]) {
 		     {
 		       float x = a + ((i + 0.5) * ban);
 		       //printf("%f\n", x);
-		       tls += f1(x, intensity);
+		       tls += f2(x, intensity);
 		     }
 		   tls *= ban;
-		   //tls += b[i];
-		   
-
-		   
 		  },
-		 [&](int tls) -> void{
+		     
+		 [&](float tls) -> void{
 		   sum += tls;
 		 }
 		 );
-
-    //std::cout<<sum<<"\n";
-    
-    /* for (int i = 0; i <= n-1; i++)
-      {
-	float x = a + ((i + 0.5) * ban);
-	printf("%f\n", x);
-	result += f1(x, intensity);
-	} */
-    sum *= ban;
-    break;
-    /* case 2 :
-    //Use f2
-    for (int i = 0; i <= n-1; i++)
-      {
-	float x = a + ((i + 0.5) * ban);
-	result += f2(x, intensity);
-      }
-    result *= ban;    
     break;
   case 3 :
     //use f3
-    for (int i = 0; i <= n-1; i++)
-      {
-	float x = a + ((i + 0.5) * ban);
-	result += f3(x, intensity);
-      }
-    result *= ban;
-   break;
+    sl.parfor<float>(0, nbthreads-1, 1,
+		 [&](float& tls) -> void{
+		   tls = 0;
+		 },
+		 [&](int i, float& tls) -> void{
+		   //tls += b[i];
+
+		   int chunk = n/nbthreads;
+		   int pass = 0; //How do I determine this?
+		   int start = (pass * chunk);
+		   int end = ((pass + 1) * chunk) - 1;
+		   
+		   for (int i = start; i <= end; i++)
+		     {
+		       float x = a + ((i + 0.5) * ban);
+		       //printf("%f\n", x);
+		       tls += f3(x, intensity);
+		     }
+		   tls *= ban;
+		  },
+		     
+		 [&](float tls) -> void{
+		   sum += tls;
+		 }
+		 );
+    break;
   case 4 :
     //use f4
-    for (int i = 0; i <= n-1; i++)
-      {
-	float x = a + ((i + 0.5) * ban);
-	//printf("%f   %i    %f\n", ban, i,  x);
-	result += f4(x, intensity);
-      }
-    result *= ban;
+    sl.parfor<float>(0, nbthreads-1, 1,
+		 [&](float& tls) -> void{
+		   tls = 0;
+		 },
+		 [&](int i, float& tls) -> void{
+		   //tls += b[i];
+
+		   int chunk = n/nbthreads;
+		   int pass = 0; //How do I determine this?
+		   int start = (pass * chunk);
+		   int end = ((pass + 1) * chunk) - 1;
+		   
+		   for (int i = start; i <= end; i++)
+		     {
+		       float x = a + ((i + 0.5) * ban);
+		       //printf("%f\n", x);
+		       tls += f4(x, intensity);
+		     }
+		   tls *= ban;
+		  },
+		     
+		 [&](float tls) -> void{
+		   sum += tls;
+		 }
+		 );
     break;
-    */
   default :
     std::cerr<<"invalid functionID";
       return -1;
