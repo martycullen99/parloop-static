@@ -55,13 +55,14 @@ int main (int argc, char* argv[]) {
 		   [&](float& tls) -> void{
 		     tls = 0;
 		   },
-		   [&](int i, float& tls) -> void{
+		   [&](int pass, float& tls) -> void{
 		   //tls += b[i];
 
 		   int chunk = n/nbthreads;
-		   int pass = 0; //How do I determine this?
+		   //int pass = 0; //How do I determine this?
 		   int start = (pass * chunk);
 		   int end = ((pass + 1) * chunk) - 1;
+		   //printf("pass: %i\n", pass);
 		   
 		   for (int i = start; i <= end; i++)
 		     {
@@ -73,13 +74,16 @@ int main (int argc, char* argv[]) {
 		     }
 		   tls *= ban;
 		   pass++;
-		   //printf("%f\n", tls);
+		   //printf("TLS: %f\n", tls);
+		   sum += tls;
+		   //printf("SUM: %f\n", sum);
+
 
 		  },
 		     
 		 [&](float tls) -> void{
-		   sum += tls;
-		   //printf("%f\n", sum);
+		   //sum += tls;
+		   //printf("SUM: %f\n", sum);
 
 		 }
 		 );
