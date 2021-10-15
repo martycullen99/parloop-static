@@ -61,7 +61,10 @@ int main (int argc, char* argv[]) {
 		   int chunk = n/nbthreads;
 		   //int pass = 0; //How do I determine this?
 		   int start = (pass * chunk);
+		   //printf("START:  %i\n", start);
 		   int end = ((pass + 1) * chunk) - 1;
+		   //printf("END:  %i\n", end);
+		   
 		   //printf("pass: %i\n", pass);
 		   
 		   for (int i = start; i <= end; i++)
@@ -69,14 +72,14 @@ int main (int argc, char* argv[]) {
 		       float x = a + ((i + 0.5) * ban);
 		       //printf("%f %f\n", x, tls);
 		       tls += f1(x, intensity);
-		       //printf("%f\n", tls);
+		       printf("TLS: %f\n", tls);
 
 		     }
-		   tls *= ban;
+		   //tls *= ban;
 		   pass++;
-		   //printf("TLS: %f\n", tls);
+		   printf("TLS: %f\n", tls);
 		   sum += tls;
-		   //printf("SUM: %f\n", sum);
+		   printf("SUM: %f\n", sum);
 
 
 		  },
@@ -84,13 +87,13 @@ int main (int argc, char* argv[]) {
 		 [&](float tls) -> void{
 		   //sum += tls;
 		   //printf("SUM: %f\n", sum);
-
+		   sum *= ban;
 		 }
 		 );
     break;
     case 2 :
     //Use f2  
-    sl.parfor<float>(0, nbthreads-1, 1,
+    sl.parfor<float>(0, nbthreads, 1,
 		 [&](float& tls) -> void{
 		   tls = 0;
 		 },
@@ -118,7 +121,7 @@ int main (int argc, char* argv[]) {
     break;
   case 3 :
     //use f3
-    sl.parfor<float>(0, nbthreads-1, 1,
+    sl.parfor<float>(0, nbthreads, 1,
 		 [&](float& tls) -> void{
 		   tls = 0;
 		 },
@@ -146,7 +149,7 @@ int main (int argc, char* argv[]) {
     break;
   case 4 :
     //use f4
-    sl.parfor<float>(0, nbthreads-1, 1,
+    sl.parfor<float>(0, nbthreads, 1,
 		 [&](float& tls) -> void{
 		   tls = 0;
 		 },
